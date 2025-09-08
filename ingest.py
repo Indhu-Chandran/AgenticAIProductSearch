@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 from typing import List, Dict, Any, Optional
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 import logging
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI()
 
 class ProductCatalogIngester:
     """
@@ -69,9 +69,9 @@ class ProductCatalogIngester:
             Rating: {product['rating']} / 5.0"""
             
             try:
-                # Get embedding from OpenAI
-                response = openai.embeddings.create(
-                    model="text-embedding-ada-002",
+                # Get embedding from OpenAI using the modern client
+                response = client.embeddings.create(
+                    model="text-embedding-3-small",
                     input=content
                 )
                 

@@ -1,7 +1,7 @@
 import os
 import json
 from typing import Dict, Any, List, Optional, Tuple
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 from query_engine import ProductQueryEngine
 import logging
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI()
 
 class ProductSearchAgent:
     """
@@ -192,8 +192,8 @@ class ProductSearchAgent:
 Provide a detailed comparison focusing on price, features, and overall value."""
         
         try:
-            response = openai.chat.completions.create(
-                model="gpt-4o",
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "You are a helpful product comparison assistant."},
                     {"role": "user", "content": prompt}
@@ -236,8 +236,8 @@ Based on these preferences, recommend the most suitable products from the catalo
 Provide 2-3 recommendations with explanations for why each product matches the customer's needs."""
         
         try:
-            response = openai.chat.completions.create(
-                model="gpt-4o",
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "You are a helpful product recommendation assistant."},
                     {"role": "user", "content": prompt}
@@ -277,8 +277,8 @@ Provide 2-3 recommendations with explanations for why each product matches the c
         
         try:
             # Get response from OpenAI
-            response = openai.chat.completions.create(
-                model="gpt-4o",
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
                 messages=messages,
                 functions=[
                     {
@@ -431,8 +431,8 @@ Provide 2-3 recommendations with explanations for why each product matches the c
                     function_response = "Unknown function."
                 
                 # Get a new response that incorporates the function result
-                second_response = openai.chat.completions.create(
-                    model="gpt-4o",
+                second_response = client.chat.completions.create(
+                    model="gpt-4o-mini",
                     messages=[
                         {"role": "system", "content": system_message},
                         *self.chat_history,

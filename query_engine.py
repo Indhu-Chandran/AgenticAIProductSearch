@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from typing import Dict, Any, List, Optional, Tuple
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 import logging
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI()
 
 class ProductQueryEngine:
     """
@@ -40,8 +40,8 @@ class ProductQueryEngine:
             Embedding vector
         """
         try:
-            response = openai.embeddings.create(
-                model="text-embedding-ada-002",
+            response = client.embeddings.create(
+                model="text-embedding-3-small",
                 input=query
             )
             return response.data[0].embedding
