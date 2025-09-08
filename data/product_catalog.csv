@@ -1,0 +1,66 @@
+product_id,name,category,price,description,features,in_stock,rating
+1001,Ultra HD Smart TV 55",Electronics,799.99,"55-inch Ultra HD Smart TV with vibrant colors and crystal-clear picture quality","4K resolution, Smart TV capabilities, Voice control, Multiple HDMI ports",true,4.7
+1002,Wireless Noise-Cancelling Headphones,Electronics,249.99,"Premium wireless headphones with active noise cancellation for immersive audio experience","Active noise cancellation, 30-hour battery life, Bluetooth 5.0, Comfortable ear cushions",true,4.8
+1003,Professional Blender,Kitchen Appliances,129.99,"High-performance blender for smoothies, soups, and more","1000W motor, 5 speed settings, Pulse function, Dishwasher-safe parts",true,4.5
+1004,Ergonomic Office Chair,Furniture,199.99,"Comfortable ergonomic office chair with adjustable features","Lumbar support, Adjustable height, Breathable mesh back, 360-degree swivel",false,4.6
+1005,Smartphone XS Pro,Electronics,899.99,"Latest flagship smartphone with advanced camera system and all-day battery life","6.7-inch OLED display, Triple camera system, 5G capability, 256GB storage",true,4.9
+1006,Robot Vacuum Cleaner,Home Appliances,349.99,"Smart robot vacuum with mapping technology and app control","Smart mapping, App control, Automatic recharging, HEPA filter",true,4.4
+1007,Cast Iron Dutch Oven,Kitchen Appliances,79.99,"Versatile cast iron dutch oven for cooking and baking","Pre-seasoned, Oven-safe up to 500°F, Even heat distribution, Durable construction",true,4.7
+1008,Mechanical Gaming Keyboard,Electronics,149.99,"Responsive mechanical gaming keyboard with customizable RGB lighting","Mechanical switches, RGB lighting, Programmable keys, Anti-ghosting",true,4.5
+1009,Fitness Smartwatch,Electronics,199.99,"Advanced fitness tracker and smartwatch with health monitoring features","Heart rate monitor, GPS tracking, Sleep analysis, 7-day battery life",true,4.6
+1010,Portable Bluetooth Speaker,Electronics,89.99,"Waterproof portable Bluetooth speaker with rich sound","Waterproof IPX7, 12-hour battery life, Built-in microphone, Compact design",false,4.3
+1011,Espresso Machine,Kitchen Appliances,299.99,"Semi-automatic espresso machine for cafe-quality coffee at home","15-bar pressure, Milk frother, Cup warmer, Easy-to-clean design",true,4.8
+1012,Cordless Stick Vacuum,Home Appliances,199.99,"Lightweight cordless stick vacuum with powerful suction","40-minute runtime, HEPA filtration, Convertible to handheld, Wall-mountable",true,4.4
+1013,Smart Home Hub,Electronics,129.99,"Central smart home hub compatible with multiple devices and ecosystems","Voice control, App management, Compatible with 100+ devices, Energy monitoring",true,4.2
+1014,Memory Foam Mattress (Queen),Furniture,599.99,"Premium memory foam mattress for comfortable sleep","Medium-firm support, Cooling gel layer, Hypoallergenic cover, Motion isolation",true,4.7
+1015,Digital Air Fryer,Kitchen Appliances,119.99,"Digital air fryer for healthier cooking with less oil","5.5-quart capacity, Digital controls, 8 presets, Dishwasher-safe basket",true,4.6
+1016,Samsung QLED 65" Smart TV,Electronics,1299.99,"65-inch QLED Smart TV with Quantum Dot technology for brilliant colors","4K resolution, Quantum Processor, Ambient Mode, Anti-reflection screen, Smart Hub",true,4.8
+1017,LG OLED 55" 4K TV,Electronics,1499.99,"55-inch OLED TV with perfect blacks and infinite contrast","4K Cinema HDR, Dolby Vision IQ, Dolby Atmos, webOS Smart Platform, HDMI 2.1",true,4.9
+1018,Sony Bravia 75" LED TV,Electronics,1799.99,"75-inch LED TV with X1 Ultimate processor for stunning picture quality","4K HDR, Full Array LED, Acoustic Multi-Audio, Android TV, Voice Remote",true,4.7
+1019,TCL 50" 4K Roku TV,Electronics,349.99,"50-inch 4K TV with built-in Roku streaming platform","4K UHD, HDR, Easy Voice Control, Auto Game Mode, Simple Remote",true,4.5
+1020,Hisense 43" Smart Android TV,Electronics,299.99,"43-inch Smart TV with Android TV operating system","4K UHD, Dolby Vision HDR, DTS Virtual:X, Voice Remote, Chromecast built-in",true,4.3
+1021,Vizio 70" V-Series 4K TV,Electronics,649.99,"70-inch V-Series 4K TV with SmartCast platform","4K UHD, Dolby Vision HDR, Full Array Backlight, Voice control, Apple AirPlay",true,4.4
+1022,Philips 58" 4K UHD Android TV,Electronics,499.99,"58-inch 4K UHD TV with Ambilight technology","3-sided Ambilight, P5 Perfect Picture Engine, Dolby Vision, Dolby Atmos, HDR10+",true,4.6
+1023,Toshiba 32" Smart HD TV,Electronics,179.99,"32-inch Smart HD TV with Fire TV built-in","720p HD, Fire TV Experience, Voice Remote with Alexa, 3 HDMI inputs",true,4.2
+1024,Samsung The Frame 55" QLED TV,Electronics,1499.99,"55-inch QLED TV that transforms into art when not in use","Art Mode, Customizable frame, No-gap wall mount, One Connect Box, 4K resolution",true,4.8
+1025,LG NanoCell 65" 4K Smart TV,Electronics,899.99,"65-inch NanoCell TV with pure colors and wide viewing angle","NanoCell Display, Local Dimming, webOS, ThinQ AI, Filmmaker Mode",true,4.6
+1026,iPhone 14 Pro Max,Electronics,1099.99,"Apple's flagship smartphone with advanced camera system and A16 Bionic chip","6.7-inch Super Retina XDR display, Dynamic Island, 48MP camera, 5G, iOS 16",true,4.9
+1027,Samsung Galaxy S23 Ultra,Electronics,1199.99,"Samsung's premium smartphone with S Pen and 200MP camera","6.8-inch Dynamic AMOLED 2X, S Pen included, 200MP camera, 5G, Android 13",true,4.8
+1028,Google Pixel 7 Pro,Electronics,899.99,"Google's flagship phone with Tensor G2 chip and advanced AI features","6.7-inch LTPO OLED, 50MP camera, Real Tone, Magic Eraser, Android 13",true,4.7
+1029,OnePlus 11,Electronics,699.99,"OnePlus flagship with Hasselblad camera system and fast charging","6.7-inch AMOLED, Snapdragon 8 Gen 2, 100W SUPERVOOC charging, OxygenOS",true,4.6
+1030,Xiaomi 13 Pro,Electronics,899.99,"Xiaomi's premium phone with Leica optics and Snapdragon 8 Gen 2","6.73-inch AMOLED, 50MP Leica camera, 120W HyperCharge, MIUI 14",true,4.5
+1031,Motorola Edge 40 Pro,Electronics,799.99,"Motorola's flagship with curved display and powerful performance","6.7-inch pOLED, Snapdragon 8 Gen 2, 125W TurboPower charging, Ready For platform",true,4.4
+1032,Nothing Phone (2),Electronics,599.99,"Unique smartphone with Glyph Interface and clean software","6.7-inch OLED, Glyph Interface, Snapdragon 8+ Gen 1, Nothing OS 2.0",true,4.5
+1033,Sony Xperia 1 V,Electronics,1299.99,"Sony's premium smartphone with professional camera features","6.5-inch 4K HDR OLED, ZEISS optics, 3.5mm headphone jack, Android 13",true,4.7
+1034,ASUS ROG Phone 7,Electronics,999.99,"Gaming smartphone with AeroActive Cooler and high refresh rate","6.78-inch AMOLED, 165Hz refresh rate, Snapdragon 8 Gen 2, 6000mAh battery",true,4.8
+1035,iPhone SE (2022),Electronics,429.99,"Compact iPhone with A15 Bionic chip and Touch ID","4.7-inch Retina HD display, A15 Bionic, 5G, IP67 water resistance",true,4.5
+1036,Whirlpool French Door Refrigerator,Home Appliances,1799.99,"36-inch French Door refrigerator with fingerprint-resistant stainless steel","25 cu. ft. capacity, LED lighting, Adaptive defrost, Humidity-controlled crispers",true,4.6
+1037,Samsung Front Load Washer,Home Appliances,899.99,"Front load washer with AI-powered washing optimization","5.0 cu. ft. capacity, Steam function, Self Clean+, Smart Dial, Wi-Fi connectivity",true,4.7
+1038,LG Electric Range with Air Fry,Kitchen Appliances,999.99,"Electric range with built-in air fryer function","6.3 cu. ft. capacity, ProBake Convection, EasyClean, Smart ThinQ Technology",true,4.5
+1039,Bosch Dishwasher 800 Series,Kitchen Appliances,1099.99,"Ultra-quiet dishwasher with flexible third rack","42 dBA operation, CrystalDry technology, FlexSpace tines, InfoLight",true,4.8
+1040,GE Profile Smart Microwave,Kitchen Appliances,349.99,"Smart countertop microwave with scan-to-cook technology","1.1 cu. ft. capacity, Scan-to-Cook, Voice control, Sensor cooking",true,4.4
+1041,Dyson V15 Detect Cordless Vacuum,Home Appliances,749.99,"Advanced cordless vacuum with laser dust detection","60-minute run time, Laser Slim Fluffy cleaner head, LCD screen, HEPA filtration",true,4.9
+1042,KitchenAid Stand Mixer Professional,Kitchen Appliances,449.99,"Professional stand mixer with bowl-lift design","5-quart capacity, 10 speeds, Power hub for attachments, Stainless steel bowl",true,4.8
+1043,Ninja Foodi 10-in-1 Pressure Cooker,Kitchen Appliances,199.99,"Multi-functional pressure cooker with air frying capabilities","6.5-quart capacity, TenderCrisp Technology, 10 cooking functions, Nonstick pot",true,4.7
+1044,Breville Smart Oven Air Fryer Pro,Kitchen Appliances,399.99,"Premium countertop oven with 13 cooking functions","1 cu. ft. capacity, Element IQ, Super Convection, 13 preset cooking functions",true,4.6
+1045,Miele Complete C3 Canister Vacuum,Home Appliances,699.99,"High-end canister vacuum with HEPA filtration","1200W motor, AirClean sealed system, Electro Premium brush, 36-foot operating radius",true,4.8
+1046,Sony 65" BRAVIA XR OLED TV,Electronics,2499.99,"65-inch OLED TV with Cognitive Processor XR","XR OLED Contrast, XR Motion Clarity, Google TV, Acoustic Surface Audio+",true,4.9
+1047,LG C2 77" OLED evo TV,Electronics,2999.99,"77-inch OLED evo TV with brighter picture and enhanced processing","OLED evo panel, α9 Gen5 AI Processor, Dolby Vision IQ, Dolby Atmos, 4 HDMI 2.1",true,4.8
+1048,Samsung Neo QLED 85" 8K TV,Electronics,4999.99,"85-inch Neo QLED 8K TV with Mini LED backlighting","Quantum Matrix Technology, Neo Quantum Processor 8K, Infinity Screen, Object Tracking Sound+",true,4.7
+1049,TCL 65" 6-Series Mini-LED TV,Electronics,999.99,"65-inch Mini-LED TV with QLED technology","Quantum Dot technology, Contrast Control Zones, Variable Refresh Rate, Dolby Vision",true,4.6
+1050,Sony A95K 55" QD-OLED TV,Electronics,2799.99,"55-inch QD-OLED TV with revolutionary display technology","QD-OLED panel, XR Triluminos Max, Acoustic Surface Audio+, Perfect for PS5",true,4.9
+1051,Samsung Galaxy Z Fold 5,Electronics,1799.99,"Foldable smartphone with large internal display","7.6-inch main display, 6.2-inch cover display, S Pen compatible, IPX8 water resistance",true,4.7
+1052,Google Pixel Fold,Electronics,1799.99,"Google's first foldable smartphone with Tensor G2","7.6-inch internal display, 5.8-inch cover display, Pixel camera system, Android 13",true,4.6
+1053,Motorola Razr 40 Ultra,Electronics,999.99,"Flip-style foldable phone with large cover display","6.9-inch internal pOLED, 3.6-inch external display, Snapdragon 8+ Gen 1",true,4.5
+1054,Bose QuietComfort Ultra Headphones,Electronics,429.99,"Premium noise cancelling headphones with spatial audio","CustomTune technology, Up to 24 hours battery life, Bluetooth 5.3, Multipoint connection",true,4.8
+1055,Sony WH-1000XM5 Headphones,Electronics,399.99,"Industry-leading noise cancelling headphones","8 microphones with Auto NC Optimizer, 30-hour battery life, LDAC support",true,4.9
+1056,Apple AirPods Pro 2,Electronics,249.99,"Wireless earbuds with active noise cancellation","H2 chip, Adaptive Transparency, Personalized Spatial Audio, MagSafe charging case",true,4.7
+1057,Samsung Galaxy Buds 3 Pro,Electronics,199.99,"Premium earbuds with intelligent ANC and Hi-Fi sound","Intelligent ANC, 360 Audio, IPX7 water resistance, 24-bit audio",true,4.6
+1058,Sonos Arc Soundbar,Electronics,899.99,"Premium soundbar with Dolby Atmos and voice control","Dolby Atmos, 11 Class-D amplifiers, Trueplay tuning, Voice assistant support",true,4.8
+1059,LG 4.1.2 Soundbar with Dolby Atmos,Electronics,699.99,"Immersive soundbar system with up-firing speakers","Dolby Atmos & DTS:X, AI Sound Pro, HDMI eARC, Wireless subwoofer",true,4.7
+1060,Vitamix 5200 Blender,Kitchen Appliances,499.99,"Professional-grade blender with variable speed control","2.0 HP motor, 64 oz container, Self-cleaning, 7-year warranty",true,4.9
+1061,Instant Pot Duo Plus 9-in-1,Kitchen Appliances,129.99,"Multi-functional electric pressure cooker","9 functions, 6-quart capacity, 15 one-touch programs, Easy-seal lid",true,4.7
+1062,Cuisinart 14-Cup Food Processor,Kitchen Appliances,229.99,"Large capacity food processor with powerful motor","720-watt motor, Extra-large feed tube, Stainless steel blades, 7 food prep functions",true,4.6
+1063,Weber Genesis E-325s Gas Grill,Outdoor,999.99,"Premium 3-burner gas grill with sear zone","Sear zone, Side burner, 787 sq. in. cooking area, iGrill 3 compatible",true,4.8
+1064,Traeger Pro 575 Wood Pellet Grill,Outdoor,799.99,"Wi-Fi enabled wood pellet grill and smoker","WiFIRE technology, 572 sq. in. cooking capacity, D2 drivetrain, 6-in-1 versatility",true,4.7
+1065,DJI Mini 3 Pro Drone,Electronics,759.99,"Lightweight drone with 4K video and obstacle avoidance","249g weight, 4K/60fps video, 3-axis gimbal, 34-minute flight time, Tri-directional obstacle sensing",true,4.8
