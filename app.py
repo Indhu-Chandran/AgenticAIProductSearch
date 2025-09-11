@@ -80,26 +80,57 @@ def main():
     query engine for product catalogs. Ask questions about products in natural language!
     """)
     
+    # Auto-ingest from environment URL (if provided and nothing loaded yet)
+    catalog_url = os.getenv("CATALOG_URL")
+    if not st.session_state.ingested and catalog_url:
+        try:
+            with st.spinner("Auto-ingesting catalog from CATALOG_URL..."):
+                ingester = ProductCatalogIngester(persist_dir="./storage")
+                if ingester.ingest_and_index(source_url=catalog_url):
+                    products, embeddings = ingester.load_data()
+                    if products and embeddings:
+                        st.session_state.agent = ProductSearchAgent(products, embeddings)
+                        st.session_state.ingested = True
+                        st.success("Catalog auto-ingested from CATALOG_URL")
+        except Exception as e:
+            st.warning(f"Auto-ingest failed: {e}")
+
     # Sidebar
     with st.sidebar:
         st.header("Product Catalog")
         
-        # Option to use sample data or upload custom data
+        # Option to use sample data, upload file, or load from URL
         data_option = st.radio(
             "Choose data source:",
-            ["Use sample catalog", "Upload custom catalog"]
+            ["Use sample catalog", "Upload custom catalog", "Load from URL"]
         )
         
         if data_option == "Use sample catalog":
             if st.button("Load Sample Catalog"):
                 ingest_catalog("data/product_catalog.csv")
-        else:
+        elif data_option == "Upload custom catalog":
             uploaded_file = st.file_uploader("Upload your product catalog (CSV)", type=["csv"])
             if uploaded_file is not None:
                 # Save the uploaded file temporarily
                 with open("data/uploaded_catalog.csv", "wb") as f:
                     f.write(uploaded_file.getbuffer())
                 ingest_catalog("data/uploaded_catalog.csv")
+        else:
+            url = st.text_input("Enter catalog URL (CSV or JSON)", placeholder="https://example.com/products.json")
+            if st.button("Load from URL") and url:
+                with st.spinner("Fetching and ingesting catalog from URL..."):
+                    ingester = ProductCatalogIngester(persist_dir="./storage")
+                    ok = ingester.ingest_and_index(source_url=url)
+                    if ok:
+                        products, embeddings = ingester.load_data()
+                        if products and embeddings:
+                            st.session_state.agent = ProductSearchAgent(products, embeddings)
+                            st.session_state.ingested = True
+                            st.success("Catalog ingested from URL successfully!")
+                        else:
+                            st.error("Fetched, but failed to load products/embeddings after ingestion.")
+                    else:
+                        st.error("Failed to ingest from the provided URL. Please verify the URL returns CSV or JSON.")
         
         # Option to load existing data
         if not st.session_state.ingested:
