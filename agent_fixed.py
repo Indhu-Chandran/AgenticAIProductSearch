@@ -59,13 +59,13 @@ class ProductSearchAgent:
         Returns:
             Formatted product string
         """
-        return f"""Product: {product['name']}
-        Category: {product['category']}
-        Price: ${product['price']}
-        Rating: {product['rating']}/5.0
-        In Stock: {'Yes' if product['in_stock'] else 'No'}
-        Description: {product['description']}
-        Features: {product['features']}"""
+        return f"""**{product['name']}**
+- Category: {product['category']}
+- Price: ${product['price']}
+- Rating: {product['rating']}/5.0
+- In Stock: {'Yes' if product['in_stock'] else 'No'}
+- Description: {product['description']}
+- Features: {product['features']}"""
     
     def search_products(self, query: str, top_k: int = 3) -> str:
         """
@@ -81,14 +81,14 @@ class ProductSearchAgent:
         results = self.query_engine.search(query, top_k=top_k)
         
         if not results:
-            return "No products found matching your query."
+            return f"I couldn't find any products in our catalog matching '{query}'. Our catalog contains {len(self.products)} products across categories: {', '.join(self.categories)}."
         
-        response = f"Found {len(results)} products matching your query:\n\n"
+        response = f"I found {len(results)} products in our catalog matching '{query}':\n\n"
         
         for i, result in enumerate(results, 1):
             product = result["product"]
             similarity = result["similarity"]
-            response += f"#{i} (Relevance: {similarity:.2f})\n"
+            response += f"**#{i}** (Relevance: {similarity:.2f})\n"
             response += self._format_product_for_display(product)
             response += "\n\n"
             
@@ -122,12 +122,20 @@ class ProductSearchAgent:
         )
         
         if not results:
-            return "No products found matching your filters."
+            filters_applied = []
+            if category: filters_applied.append(f"category '{category}'")
+            if min_price: filters_applied.append(f"minimum price ${min_price}")
+            if max_price: filters_applied.append(f"maximum price ${max_price}")
+            if in_stock_only: filters_applied.append("in-stock only")
+            if min_rating: filters_applied.append(f"minimum rating {min_rating}")
+            
+            filter_text = " and ".join(filters_applied) if filters_applied else "your criteria"
+            return f"No products in our catalog match {filter_text}. Available categories: {', '.join(self.categories)}. Price range: ${self.price_range['min']:.2f} - ${self.price_range['max']:.2f}."
         
-        response = f"Found {len(results)} products matching your filters:\n\n"
+        response = f"Found {len(results)} products in our catalog matching your filters:\n\n"
         
         for i, product in enumerate(results, 1):
-            response += f"#{i}\n"
+            response += f"**#{i}**\n"
             response += self._format_product_for_display(product)
             response += "\n\n"
             
@@ -167,14 +175,14 @@ class ProductSearchAgent:
         )
         
         if not results:
-            return "No products found matching your query and filters."
+            return f"No products in our catalog match your search '{query}' with the applied filters. Try broadening your search or adjusting the filters."
         
-        response = f"Found {len(results)} products matching your query and filters:\n\n"
+        response = f"Found {len(results)} products in our catalog matching '{query}' with your filters:\n\n"
         
         for i, result in enumerate(results, 1):
             product = result["product"]
             similarity = result["similarity"]
-            response += f"#{i} (Relevance: {similarity:.2f})\n"
+            response += f"**#{i}** (Relevance: {similarity:.2f})\n"
             response += self._format_product_for_display(product)
             response += "\n\n"
             
@@ -191,36 +199,43 @@ class ProductSearchAgent:
             Comparison of the products
         """
         products_to_compare = []
+        found_ids = []
+        
         for product_id in product_ids:
             for product in self.products:
                 if str(product['product_id']) == product_id:
                     products_to_compare.append(product)
+                    found_ids.append(product_id)
                     break
         
         if not products_to_compare:
-            return "No products found with the provided IDs."
+            available_ids = [str(p['product_id']) for p in self.products[:10]]  # Show first 10 IDs
+            return f"No products found with the provided IDs ({', '.join(product_ids)}). Available product IDs include: {', '.join(available_ids)}..."
         
-        # Use OpenAI to generate a comparison
-        product_details = "\n\n".join([self._format_product_for_display(p) for p in products_to_compare])
+        if len(products_to_compare) < len(product_ids):
+            missing_ids = [pid for pid in product_ids if pid not in found_ids]
+            response = f"Warning: Could not find products with IDs: {', '.join(missing_ids)}\n\n"
+        else:
+            response = ""
         
-        prompt = f"""Compare the following products and highlight their key differences and similarities:
-
-{product_details}
-
-Provide a detailed comparison focusing on price, features, and overall value."""
+        response += f"Comparing {len(products_to_compare)} products from our catalog:\n\n"
         
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You are a helpful product comparison assistant."},
-                    {"role": "user", "content": prompt}
-                ]
-            )
-            return response.choices[0].message.content
-        except Exception as e:
-            logger.error(f"Error comparing products: {e}")
-            return "Sorry, I encountered an error while comparing these products."
+        for i, product in enumerate(products_to_compare, 1):
+            response += f"**Product {i}:**\n"
+            response += self._format_product_for_display(product)
+            response += "\n\n"
+        
+        # Add a simple comparison summary
+        if len(products_to_compare) >= 2:
+            prices = [float(p['price']) for p in products_to_compare]
+            ratings = [float(p['rating']) for p in products_to_compare]
+            
+            response += "**Quick Comparison:**\n"
+            response += f"- Price range: ${min(prices):.2f} - ${max(prices):.2f}\n"
+            response += f"- Rating range: {min(ratings):.1f} - {max(ratings):.1f}/5.0\n"
+            response += f"- Categories: {', '.join(set(p['category'] for p in products_to_compare))}\n"
+        
+        return response
     
     def recommend_products(self, user_preferences: str, budget: Optional[float] = None) -> str:
         """
@@ -239,36 +254,37 @@ Provide a detailed comparison focusing on price, features, and overall value."""
             filtered_products = [p for p in filtered_products if float(p['price']) <= budget]
         
         if not filtered_products:
-            return "No products found within your budget."
+            return f"No products in our catalog are within your budget of ${budget}. Our price range is ${self.price_range['min']:.2f} - ${self.price_range['max']:.2f}."
         
-        # Format products for the prompt
-        product_details = "\n\n".join([self._format_product_for_display(p) for p in filtered_products])
+        # Use semantic search to find products matching preferences
+        results = self.query_engine.search(user_preferences, top_k=min(5, len(filtered_products)))
         
-        budget_text = f" with a budget of ${budget}" if budget else ""
-        prompt = f"""A customer has the following preferences: {user_preferences}{budget_text}.
-
-Based on these preferences, recommend the most suitable products from the catalog below:
-
-{product_details}
-
-Provide 2-3 recommendations with explanations for why each product matches the customer's needs."""
+        if not results:
+            return f"I couldn't find products matching your preferences '{user_preferences}' in our catalog."
         
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You are a helpful product recommendation assistant."},
-                    {"role": "user", "content": prompt}
-                ]
-            )
-            return response.choices[0].message.content
-        except Exception as e:
-            logger.error(f"Error recommending products: {e}")
-            return "Sorry, I encountered an error while generating recommendations."
+        # Filter results by budget if specified
+        if budget is not None:
+            results = [r for r in results if float(r['product']['price']) <= budget]
+        
+        if not results:
+            return f"No products matching your preferences are within your budget of ${budget}."
+        
+        budget_text = f" within your budget of ${budget}" if budget else ""
+        response = f"Based on your preferences '{user_preferences}'{budget_text}, I recommend these products from our catalog:\n\n"
+        
+        for i, result in enumerate(results[:3], 1):  # Top 3 recommendations
+            product = result["product"]
+            similarity = result["similarity"]
+            response += f"**Recommendation #{i}** (Match: {similarity:.2f})\n"
+            response += self._format_product_for_display(product)
+            response += f"\n*Why this matches:* This product scores {similarity:.2f} similarity to your preferences.\n\n"
+        
+        return response
     
     def chat(self, message: str) -> str:
         """
         Chat with the product search agent.
+        This version uses function calling but ensures responses are strictly from the catalog.
         
         Args:
             message: User message
@@ -279,11 +295,14 @@ Provide 2-3 recommendations with explanations for why each product matches the c
         # Add user message to chat history
         self.chat_history.append({"role": "user", "content": message})
         
-        # Prepare system message
-        system_message = """You are a helpful product search assistant for an e-commerce catalog. 
-        Your goal is to help users find products that match their needs and preferences.
-        You can search, filter, compare, and recommend products from the catalog.
-        Always provide detailed and helpful responses."""
+        # Prepare system message with strict instructions
+        system_message = f"""You are a helpful product search assistant for an e-commerce catalog containing exactly {len(self.products)} products. 
+        You can ONLY provide information about products that exist in this catalog. Never invent, hallucinate, or suggest products not in the catalog.
+        
+        Available categories: {', '.join(self.categories)}
+        Price range: ${self.price_range['min']:.2f} - ${self.price_range['max']:.2f}
+        
+        Use the provided functions to search, filter, compare, and recommend products. Always be helpful but honest about catalog limitations."""
         
         # Prepare messages for OpenAI
         messages = [
@@ -448,20 +467,18 @@ Provide 2-3 recommendations with explanations for why each product matches the c
                 else:
                     function_response = "Unknown function."
                 
-                # Get a new response that incorporates the function result
-                second_response = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[
-                        {"role": "system", "content": system_message},
-                        *self.chat_history,
-                        assistant_message,
-                        {"role": "function", "name": function_name, "content": function_response}
-                    ]
-                )
-                
-                final_response = second_response.choices[0].message.content
+                # Return the function response directly (no second GPT call to avoid hallucination)
+                final_response = function_response
             else:
-                final_response = assistant_message.content
+                # If no function call, provide a helpful response about catalog capabilities
+                final_response = f"""I can help you search our catalog of {len(self.products)} products. Here's what I can do:
+
+- **Search products**: Ask me to find products by name, description, or features
+- **Filter products**: Filter by category ({', '.join(self.categories)}), price range (${self.price_range['min']:.2f} - ${self.price_range['max']:.2f}), stock status, or rating
+- **Compare products**: Compare specific products by their IDs
+- **Get recommendations**: Tell me your preferences and budget for personalized recommendations
+
+What would you like to explore in our catalog?"""
             
             # Add assistant response to chat history
             self.chat_history.append({"role": "assistant", "content": final_response})

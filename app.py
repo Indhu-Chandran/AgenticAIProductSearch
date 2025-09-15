@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
 from ingest import ProductCatalogIngester
-from agent import ProductSearchAgent
+from agent_fixed import ProductSearchAgent
 import logging
 
 # Load environment variables

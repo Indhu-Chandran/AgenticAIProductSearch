@@ -49,7 +49,7 @@ class ProductCatalogIngester:
 
     def load_from_url(self, url: str) -> List[Dict[str, Any]]:
         """
-        Load product data from a URL (CSV or JSON).
+        Load product data from a URL (CSV or JSON with pagination support).
 
         Args:
             url: HTTP/HTTPS URL to a CSV or JSON feed
@@ -58,6 +58,12 @@ class ProductCatalogIngester:
             List of product dicts
         """
         logger.info(f"Fetching catalog from URL: {url}")
+        
+        # Check if this is the paginated API endpoint
+        if "productdataservice.vercel.app" in url:
+            return self._load_paginated_products(url)
+        
+        # Original logic for other URLs
         try:
             resp = requests.get(url, timeout=30)
             resp.raise_for_status()
@@ -97,8 +103,70 @@ class ProductCatalogIngester:
         normalized = [self._normalize_product_record(rec) for rec in data]
         return normalized
 
+    def _load_paginated_products(self, base_url: str) -> List[Dict[str, Any]]:
+        """
+        Load all products from a paginated API endpoint.
+        
+        Args:
+            base_url: Base URL for the paginated API
+            
+        Returns:
+            List of all product dicts from all pages
+        """
+        all_products = []
+        current_page = 1
+        
+        while True:
+            # Add pagination parameter
+            url = f"{base_url}?page={current_page}"
+            logger.info(f"Fetching page {current_page} from: {url}")
+            
+            try:
+                resp = requests.get(url, timeout=30)
+                resp.raise_for_status()
+                payload = resp.json()
+                
+                # Check if request was successful
+                if not payload.get("success", False):
+                    logger.error(f"API returned success=false for page {current_page}")
+                    break
+                
+                # Extract products from this page
+                products = payload.get("products", [])
+                if not products:
+                    logger.info(f"No products found on page {current_page}")
+                    break
+                
+                all_products.extend(products)
+                logger.info(f"Loaded {len(products)} products from page {current_page}")
+                
+                # Check pagination info
+                pagination = payload.get("pagination", {})
+                has_next_page = pagination.get("hasNextPage", False)
+                total_pages = pagination.get("totalPages", 1)
+                
+                logger.info(f"Page {current_page}/{total_pages}, hasNextPage: {has_next_page}")
+                
+                if not has_next_page or current_page >= total_pages:
+                    break
+                    
+                current_page += 1
+                
+            except Exception as e:
+                logger.error(f"Failed to fetch page {current_page}: {e}")
+                break
+        
+        logger.info(f"Total products loaded: {len(all_products)}")
+        
+        # Normalize fields to engine schema
+        normalized = [self._normalize_product_record(rec) for rec in all_products]
+        return normalized
+
     def _normalize_product_record(self, rec: Dict[str, Any]) -> Dict[str, Any]:
         """Map common ecommerce fields to the expected schema.
+        
+        Handles the new API format with fields like:
+        _id, productId, displayName, description, price, image, category (nested), stock, etc.
 
         Expected keys:
           product_id, name, category, price, description, features, in_stock, rating
@@ -109,28 +177,48 @@ class ProductCatalogIngester:
                     return rec[k]
             return default
 
-        product_id = pick(["product_id", "id", "sku", "uid"]) or str(hash(json.dumps(rec, sort_keys=True)))
-        name = pick(["name", "title", "product_name"]) or "Unnamed Product"
-        category = pick(["category", "type", "collection"]) or "General"
+        # Handle the new API format
+        product_id = pick(["productId", "product_id", "_id", "id", "sku", "uid"]) or str(hash(json.dumps(rec, sort_keys=True)))
+        name = pick(["displayName", "name", "title", "product_name"]) or "Unnamed Product"
+        
+        # Handle nested category object
+        category_val = "General"
+        if "category" in rec and isinstance(rec["category"], dict):
+            category_val = rec["category"].get("displayName") or rec["category"].get("name") or "General"
+        else:
+            category_val = pick(["category", "type", "collection"]) or "General"
+        
         price_val = pick(["price", "amount", "sale_price", "regular_price"], 0)
         try:
             price = float(price_val)
         except Exception:
             price = 0.0
+            
         description = pick(["description", "desc", "details", "summary"]) or ""
-        features = pick(["features", "specs", "specifications"], "")
-        in_stock_raw = pick(["in_stock", "stock", "availability", "available"], True)
-        in_stock = bool(in_stock_raw in [True, 1, "1", "true", "True", "in_stock", "available", "yes", "Yes"]) if not isinstance(in_stock_raw, bool) else in_stock_raw
-        rating_val = pick(["rating", "rating_value", "stars"], 0)
+        
+        # Use image URL as features if available, otherwise empty
+        features = pick(["features", "specs", "specifications", "image"], "")
+        
+        # Handle stock field (could be boolean or number)
+        stock_val = pick(["stock", "in_stock", "availability", "available"], True)
+        if isinstance(stock_val, (int, float)):
+            in_stock = stock_val > 0
+        elif isinstance(stock_val, bool):
+            in_stock = stock_val
+        else:
+            in_stock = bool(stock_val in [True, 1, "1", "true", "True", "in_stock", "available", "yes", "Yes"])
+        
+        # Default rating since API doesn't provide it
+        rating_val = pick(["rating", "rating_value", "stars"], 4.0)
         try:
             rating = float(rating_val)
         except Exception:
-            rating = 0.0
+            rating = 4.0
 
         return {
             "product_id": product_id,
             "name": name,
-            "category": category,
+            "category": category_val,
             "price": price,
             "description": description,
             "features": features,
